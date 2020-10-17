@@ -1,9 +1,10 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import connectDB from './config/db.js';
-import products from './data/products.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import productRoutes from './routes/productRoutes.js';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -20,14 +21,10 @@ app.get('/', (req, res) => {
     res.send('API is running...');
 });
 
-app.get('/api/products', (req, res) => {
-    res.json(products);
-});
+app.use('/api/products', productRoutes);
 
-app.get('/api/products/:id', (req, res) => {
-    const product = products.find(product => product._id === req.params.id);
-    res.json(product);
-});
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
