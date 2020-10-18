@@ -1,3 +1,7 @@
 main {
     min-height: 80vh;
 }
+
+h1 {
+    font-size: 1.4rem;
+}
