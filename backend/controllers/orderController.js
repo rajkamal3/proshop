@@ -60,4 +60,10 @@ const updateOrderToPaid = catchAsync(async (req, res) => {
     }
 });
 
-export { addOrderItems, getOrder, updateOrderToPaid };
+const getMyOrders = catchAsync(async (req, res) => {
+    const orders = await Order.find({ user: req.user._id });
+
+    res.json(orders);
+});
+
+export { addOrderItems, getOrder, updateOrderToPaid, getMyOrders };
