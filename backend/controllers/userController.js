@@ -113,4 +113,29 @@ const deleteUser = catchAsync(async (req, res, next) => {
     }
 });
 
-export { authUser, registerUser, getUserProfile, updateUserProfile, getUsers, deleteUser };
+const getUserById = catchAsync(async (req, res) => {
+    const user = await User.findById(req.params.id).select('-password');
+    if (user) {
+        res.json(user);
+    } else {
+        throw new Error('User not found.');
+    }
+});
+
+const updateUser = catchAsync(async (req, res) => {
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: false });
+
+    if (updateUser) {
+        res.status(201).json({
+            status: 'success',
+            user: updatedUser
+        });
+    } else {
+        res.status(404).json({
+            status: 'fail',
+            message: 'User not found.'
+        });
+    }
+});
+
+export { authUser, registerUser, getUserProfile, updateUserProfile, getUsers, deleteUser, getUserById, updateUser };
