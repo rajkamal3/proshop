@@ -33,4 +33,28 @@ const deleteProduct = catchAsync(async (req, res) => {
     }
 });
 
-export { getAllProducts, getProduct, deleteProduct };
+const createProduct = catchAsync(async (req, res) => {
+    const product = new Product({
+        name: 'Sample name',
+        price: 0,
+        user: req.user._id,
+        image: '/images/sample.jpg',
+        brand: 'Sample brand',
+        category: 'Sample category',
+        countInStock: 0,
+        numReviews: 0,
+        description: 'Sample description'
+    });
+
+    const createdProduct = await product.save();
+    res.status(201).json(createdProduct);
+});
+
+const updateProduct = catchAsync(async (req, res) => {
+    // const { name, price, description, image, brand, category, countInStock } = req.body;
+
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.status(201).json(product);
+});
+
+export { getAllProducts, getProduct, deleteProduct, createProduct, updateProduct };
