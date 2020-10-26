@@ -66,4 +66,10 @@ const getMyOrders = catchAsync(async (req, res) => {
     res.json(orders);
 });
 
-export { addOrderItems, getOrder, updateOrderToPaid, getMyOrders };
+const getOrders = catchAsync(async (req, res) => {
+    const orders = await Order.find({}).populate('user', 'id name');
+
+    res.json(orders);
+});
+
+export { addOrderItems, getOrder, updateOrderToPaid, getMyOrders, getOrders };
