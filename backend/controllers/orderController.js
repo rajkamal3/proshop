@@ -60,6 +60,22 @@ const updateOrderToPaid = catchAsync(async (req, res) => {
     }
 });
 
+const updateOrderToDelivered = catchAsync(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+        order.isDelivered = true;
+        order.deliveredAt = Date.now();
+
+        const updatedOrder = await order.save();
+
+        res.json(updatedOrder);
+    } else {
+        res.status(404);
+        throw new Error(`Order not found.`);
+    }
+});
+
 const getMyOrders = catchAsync(async (req, res) => {
     const orders = await Order.find({ user: req.user._id });
 
@@ -72,4 +88,4 @@ const getOrders = catchAsync(async (req, res) => {
     res.json(orders);
 });
 
-export { addOrderItems, getOrder, updateOrderToPaid, getMyOrders, getOrders };
+export { addOrderItems, getOrder, updateOrderToPaid, updateOrderToDelivered, getMyOrders, getOrders };
