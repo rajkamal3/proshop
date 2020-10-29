@@ -108,4 +108,10 @@ const createProductReview = catchAsync(async (req, res) => {
     }
 });
 
-export { getAllProducts, getProduct, deleteProduct, createProduct, updateProduct, createProductReview };
+const getTopProducts = catchAsync(async (req, res, next) => {
+    const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+
+    res.json(products);
+});
+
+export { getAllProducts, getProduct, deleteProduct, createProduct, updateProduct, createProductReview, getTopProducts };
